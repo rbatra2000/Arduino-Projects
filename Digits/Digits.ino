@@ -1,18 +1,9 @@
 
 #include <SoftwareSerial.h>
 /*
-  Showing number 0-9 on a Common Anode 7-segment LED display
-  Displays the numbers 0-9 on the display, with one second inbetween.
-    A
-   ---
-  F |   | B
-  | G |
-   ---
-  E |   | C
-  |   |
-   ---
-    D
-  This example code is in the public domain.
+  Stopwatch using a 4 Digit 7 Segment LED Display
+
+  Created by Ritik Batra, 2018
 */
 
 // Pin 2-8 is connected to the 7 segments of the display.
@@ -24,16 +15,20 @@ int pinD = 5;
 int pinE = 6;
 int pinF = 7;
 int pinG = 8;
+
+// Control which digit is being used
 int D1 = 9;
 int D2 = 10;
 int D3 = 11;
 int D4 = 12;
+
 int buttonPin = 14;     // the number of the pushbutton pin
 
+// This is to keep track of the numbers
 int digits[4] = { 0, 0, 0, 0 };
 
 
-// the setup routine runs once when you press reset:
+// the setup routine sets up all the inputs/outputs
 void setup() {
   // initialize the digital pins as outputs.
   pinMode(pinA, OUTPUT);
@@ -48,14 +43,16 @@ void setup() {
   pinMode(D3, OUTPUT);
   pinMode(D4, OUTPUT);
 
+  //Testing purposes only:
   Serial.begin(115200);
 }
 
-// the loop routine runs over and over again forever:
+// Continously update the time and each loop lasts one second.
 void loop() {
-    update();
+  update();
   int start = millis();
   int endtime = start;
+  // the while loop lasts for one second, and the delays are so short, it is not noticeable.
   while ((endtime - start) <= 1000) {
     printNum(digits[0], 1);
     delay(1);
@@ -67,12 +64,14 @@ void loop() {
     delay(1);
     endtime = millis();
   }
-//  Serial.print(digits[0]);
-//  Serial.print(digits[1]);
-//  Serial.print(digits[2]);
-//  Serial.println(digits[3]);
+  //Testing purposes:
+  //  Serial.print(digits[0]);
+  //  Serial.print(digits[1]);
+  //  Serial.print(digits[2]);
+  //  Serial.println(digits[3]);
 }
 
+// used to increment time
 void update() {
   digits[3]++;
   if (digits[3] == 10) {
@@ -89,6 +88,7 @@ void update() {
   }
 }
 
+//Used to convert a number to its LED counterpart for a specific digit.
 void printNum (int num, int digit)
 {
   if (digit == 1) {
@@ -136,15 +136,18 @@ void printNum (int num, int digit)
   }
 }
 
-void off() {
-  digitalWrite(pinA, LOW);
-  digitalWrite(pinB, LOW);
-  digitalWrite(pinC, LOW);
-  digitalWrite(pinD, LOW);
-  digitalWrite(pinE, LOW);
-  digitalWrite(pinF, LOW);
-  digitalWrite(pinG, LOW);
-}
+// Testing purposes:
+//void off() {
+//  digitalWrite(pinA, LOW);
+//  digitalWrite(pinB, LOW);
+//  digitalWrite(pinC, LOW);
+//  digitalWrite(pinD, LOW);
+//  digitalWrite(pinE, LOW);
+//  digitalWrite(pinF, LOW);
+//  digitalWrite(pinG, LOW);
+//}
+
+// Control which digit is being lit up
 
 void digit1() {
   digitalWrite(D1, LOW);
@@ -173,6 +176,8 @@ void digit4() {
   digitalWrite(D3, HIGH);
   digitalWrite(D4, LOW);
 }
+
+// Specific instructions on how to create each number
 
 void num0() {
   digitalWrite(pinA, HIGH);
